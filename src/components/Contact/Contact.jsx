@@ -1,7 +1,15 @@
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillPhone } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { deleteContact } from "../../redux/contactsSlice";
 import css from "./Contact.module.css";
-const Contact = ({ id, name, number, onDeleteContact }) => {
+const Contact = ({ id, name, number }) => {
+  const dispatch = useDispatch();
+
+  const onDeleteContact = () => {
+    dispatch(deleteContact(id));
+  };
+
   return (
     <>
       <div className="profile">

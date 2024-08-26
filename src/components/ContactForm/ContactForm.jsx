@@ -1,6 +1,8 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
 import css from "./ContactForm.module.css";
 
 const validationSchema = Yup.object({
@@ -14,7 +16,9 @@ const validationSchema = Yup.object({
     .required("Обов'язкове поле"),
 });
 
-const ContactForm = ({ onAddContact }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -22,7 +26,7 @@ const ContactForm = ({ onAddContact }) => {
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      onAddContact({ ...values, id: nanoid() });
+      dispatch(addContact({ ...values, id: nanoid() }));
       resetForm();
     },
   });
@@ -67,45 +71,3 @@ const ContactForm = ({ onAddContact }) => {
 };
 
 export default ContactForm;
-
-/* import css from "./ContactForm.module.css";
-
-const ContactForm = ({ onAddContact }) => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formElements = event.currentTarget.elements;
-    const name = formElements.profileName.value;
-    const number = formElements.profileNumber.value;
-    const newObjContact = { name, number };
-    onAddContact(newObjContact);
-    event.currentTarget.reset();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        <span>Name: </span>
-        <input
-          type="text"
-          name="profileName"
-          placeholder="Ivan Petrov"
-          required
-        />
-      </label>
-      <label>
-        <span> Phone: </span>
-        <input
-          type="tel"
-          name="profileNumber"
-          placeholder="000-00-00"
-          required
-        />
-      </label>
-      <button type="submit" className={css.button}>
-        Add contact
-      </button>
-    </form>
-  );
-};
-
-export default ContactForm; */
